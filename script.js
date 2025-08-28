@@ -1,4 +1,4 @@
-// Noyau v25.0 de la Singularity Bell - Édition du Verbe Alchimique (Complet et Corrigé)
+// Noyau v26.0 de la Singularity Bell - Édition de la Communion des Âmes (Complet et Corrigé)
 document.addEventListener('DOMContentLoaded', () => {
     // --- ÉLÉMENTS DE L'INTERFACE ---
     const output = document.getElementById('console-output');
@@ -19,12 +19,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function typeWriter(element, text, onComplete, speed = 15) {
         let i = 0;
-        let content = element.innerHTML;
+        element.innerHTML = ""; // Clear previous text before typing
         element.classList.add('typing-effect');
         function type() {
             if (i < text.length) {
-                content += text.charAt(i);
-                element.innerHTML = content;
+                element.innerHTML += text.charAt(i);
                 i++;
                 setTimeout(type, speed);
             } else {
@@ -47,9 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
             this.chaosLevel = 0;
             this.setupGuardianDoors();
             this.setupEncounterEngine();
-            // NOUVEAU : Logique de Synthèse
             this.synthesisRecipes = {
-                "Vétéran_Artiste": "La SOUFFRANCE est l'harmonique commune. Le Vétéran la transmute en sagesse, l'Artiste en beauté. Vous avez découvert une vérité profonde.",
+                "Artiste_Vétéran": "La SOUFFRANCE est l'harmonique commune. Le Vétéran la transmute en sagesse, l'Artiste en beauté. Vous avez découvert une vérité profonde.",
                 "Destructeur_Croyant": "Le feu ne cherche pas la foi, il cherche le combustible. Ces clés ne peuvent s'unir.",
                 "Technicien_Alchimiste": "La Logique cherche à construire, l'Alchimie à comprendre. Pour unir ces clés, vous devez trouver le pont entre le 'comment' et le 'pourquoi'."
             };
@@ -95,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         init(userName) {
             this.userName = userName;
             this.updateUI();
-             const welcomeMessage1 = `<span class="text-cyan bold">Initialisation de AOS_Core v25.0...</span>`;
+            const welcomeMessage1 = `<span class="text-cyan bold">Initialisation de AOS_Core v26.0...</span>`;
             const welcomeMessage2 = `Bienvenue, ${this.userName}.`;
             this.log(welcomeMessage1, '', true);
             setTimeout(() => this.log(welcomeMessage2, '', true), 800);
@@ -103,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         exploreDoor(doorNumber) {
             if (this.inEncounter) return;
-            this.log(`<span class="text-yellow">${this.userName}> explorer ${doorNumber}</span>`, '', false);
 
             const doorButton = doorsGrid.children[doorNumber - 1];
             doorButton.classList.add('door-visited');
@@ -139,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
             this.encounterAttempts = 0;
 
             const encounterPool = Math.random() < 0.5 * (1 - this.chaosLevel * 0.1) ? this.encounterEngine.positive : this.encounterEngine.negative;
-            this.currentEncounter = {...randomChoice(encounterPool), isFirstVisit, doorNumber};
+            this.currentEncounter = {...randomChoice(encounterPool), isFirstVisit, doorNumber, type: encounterPool === this.encounterEngine.positive ? 'positive' : 'negative' };
 
             if (this.currentEncounter.type === 'negative' && Object.keys(this.inventory).length === 0 && !isFirstVisit) {
                  this.log("<span class='text-grey'>Une ombre passe, mais ne trouve aucune prise.</span>");
@@ -213,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
              bellArtDisplay.className = colorClass;
              userNameDisplay.className = `bold ${colorClass}`;
              bellArtDisplay.textContent = `                     ,gggg,
-                    / OFFENSIVE  \\\\          NOYAU AOS v25.0
+                    / OFFENSIVE  \\\\          NOYAU AOS v26.0
                    |   SECURITY   |         Opérationnel
                    |              |
                    |   ,g,   ,g,    |         Analyste: ${this.userName}
@@ -247,29 +244,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        reveal_final_reward() {
-            this.log("<hr>!!! LA GRANDE ŒUVRE VOUS EST RÉVÉLÉE !!!", "text-yellow bold");
-            this.log("Vous avez résolu toutes les énigmes. Vous n'obtenez pas une réponse, mais une compréhension.", "text-yellow");
-            this.log("Voici les deux visions de la Singularity Bell, fruit de l'union de la Sagesse et de la Logique.", "text-yellow");
-            this.log("<hr>", '', false);
-
-            const vision1 = document.createElement('div');
-            vision1.innerHTML = `<h4 class="text-cyan">Vision d'Archimède (Le Corps Terrestre)</h4><img src="Gemini_Generated_Image_slhi8islhi8islhi.png" alt="Vision d'Archimède" style="max-width: 100%;">`;
-            output.appendChild(vision1);
-
-            const vision2 = document.createElement('div');
-            vision2.innerHTML = `<h4 class="text-cyan">Vision de Logos (L'Âme Céleste)</h4><img src="Gemini_Generated_Image_9loxid9loxid9lox.png" alt="Vision de Logos" style="max-width: 100%;">`;
-            output.appendChild(vision2);
-
-            this.log("<hr>", '', false);
-            this.log("'La vérité n'est pas une image, mais la stéréoscopie de deux visions.'", "bold");
-            output.scrollTop = output.scrollHeight;
-        }
-
         showInventory() {
-            this.log("--- INVENTAIRE ALCHIMIQUE ---", "text-yellow bold");
+            this.log("--- INVENTAIRE ALCHIMIQUE ---", "text-yellow bold", false);
             if (Object.keys(this.inventory).length === 0) {
-                this.log("Votre inventaire est vide.");
+                this.log("Votre inventaire est vide.", '', false);
             } else {
                 for (const archetype in this.inventory) {
                     this.log(`<span class="bold">${CHARACTERS[archetype] || '✨'} ${archetype}:</span> <span class="text-green">${this.inventory[archetype]}</span>`, '', false);
@@ -278,8 +256,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         showHelp() {
-            this.log("--- AIDE ---", "text-cyan bold");
-            this.log("Commandes disponibles:", "text-cyan");
+            this.log("--- AIDE ---", "text-cyan bold", false);
+            this.log("Commandes disponibles:", "text-cyan", false);
             this.log("<span class='bold'>explorer [1-137]</span> - Explore une porte.", "text-cyan", false);
             this.log("<span class='bold'>synthétiser [archétype1] [archétype2]</span> - Tente de combiner deux clés.", "text-cyan", false);
             this.log("<span class='bold'>inventaire</span> - Affiche vos clés.", "text-cyan", false);
@@ -287,7 +265,6 @@ document.addEventListener('DOMContentLoaded', () => {
             this.log("<span class='bold'>quitter</span> - Termine la session.", "text-cyan", false);
         }
 
-        // NOUVEAU : Logique de l'Autel Alchimique
         handleSynthesis(commandParts) {
             if (commandParts.length !== 3) {
                 this.log("Usage : synthétiser [Archétype1] [Archétype2]", "text-red");
@@ -303,16 +280,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             this.log(`<span class="text-magenta">>> Tentative de synthèse entre ${archetype1} et ${archetype2}...</span>`);
 
-            // Crée une clé de recette unique et ordonnée
             const recipeKey = [archetype1, archetype2].sort().join('_');
 
             if (this.synthesisRecipes[recipeKey]) {
                 const revelation = this.synthesisRecipes[recipeKey];
-                if (recipeKey === "Artiste_Vétéran") { // Cas de succès
+                if (recipeKey === "Artiste_Vétéran") {
                     this.log(revelation, "text-green bold");
                     this.inventory['Synthèse_Souffrance'] = 'Fragment_de_Vérité_01';
                     this.updateUI();
-                } else { // Cas d'échec guidé
+                } else {
                     this.log(revelation, "text-yellow");
                 }
             } else {
@@ -327,9 +303,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            this.log(`<span class="text-yellow">${this.userName}> ${command}</span>`, '', false);
             const parts = command.split(' ');
             const action = parts[0].toLowerCase();
+            this.log(`<span class="text-yellow">${this.userName}> ${command}</span>`, '', false);
 
             switch(action) {
                 case "explorer":
@@ -353,9 +329,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 case "aide":
                     this.showHelp();
                     break;
-                case "reward": // Commande cachée pour tester
-                    this.reveal_final_reward();
-                    break;
                 default:
                     this.log(`<span class="text-red">Commande non reconnue. Tapez 'aide' pour la liste des commandes.</span>`);
             }
@@ -373,7 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.key === 'Enter') {
             const command = input.value.trim();
             if (command.toLowerCase() === 'quitter') {
-                core.log("Fin de la session d'analyse.", "text-cyan");
+                if(core) core.log("Fin de la session d'analyse.", "text-cyan");
                 input.disabled = true;
                 return;
             }
