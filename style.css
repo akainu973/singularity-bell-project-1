@@ -1,0 +1,115 @@
+body {
+    background-color: #0a0a1a;
+    color: #e0e0e0;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+#main-container {
+    display: grid;
+    grid-template-columns: 1.5fr 3fr 1.5fr;
+    gap: 20px;
+    width: 98%;
+    max-width: 1600px;
+    height: 95vh;
+}
+
+#left-panel, #interaction-container, #doors-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#bell-container, #community-progress, #character-display, #console, #doors-container, #inventory-container {
+    background: #111;
+    border-radius: 5px;
+    padding: 15px;
+}
+
+#bell-container {
+    border: 1px solid #00ffff;
+    animation: glow 3s ease-in-out infinite alternate;
+}
+#community-progress { border: 1px solid #e0e0e0; }
+#character-display { border: 1px solid #ff00ff; height: 250px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center;}
+#console { border: 1px solid #ffff00; flex-grow: 1; display: flex; flex-direction: column;}
+#doors-container { border: 1px solid #00ff00; }
+#inventory-container { border: 1px solid #ffaa00; margin-top: 20px; }
+
+
+#bell-art {
+    color: #00ffff;
+    animation: pulse 5s ease-in-out infinite alternate;
+}
+#character-icons { font-size: 1.5em; }
+#entity-art { font-size: 5em; margin-bottom: 10px;}
+#entity-dialogue { font-size: 1.1em; }
+
+#console-output { flex-grow: 1; overflow-y: auto; margin-bottom: 10px; }
+.prompt { display: flex; }
+#console-input {
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    flex-grow: 1;
+    font-family: inherit;
+    font-size: 1em;
+}
+#console-input:focus { outline: none; }
+
+#doors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 5px;
+    overflow-y: auto;
+    max-height: 400px;
+}
+
+.door-button {
+    background: #333;
+    border: 1px solid #888;
+    color: #ccc;
+    padding: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+.door-button:hover { background: #555; }
+.door-visited { background: #224; border-color: #448; }
+
+#inventory-list { max-height: 150px; overflow-y: auto; }
+
+/* Couleurs */
+.text-cyan { color: #00ffff; }
+.text-magenta { color: #ff00ff; }
+.text-yellow { color: #ffff00; }
+.text-green { color: #00ff00; }
+.text-red { color: #ff0000; }
+.text-grey { color: #888; }
+.bold { font-weight: bold; }
+
+/* Définitions des animations */
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff;
+    }
+    to {
+        box-shadow: 0 0 15px #00ffff, 0 0 25px #00ffff;
+    }
+}
+
+.typing-effect::after {
+    content: '▋';
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
